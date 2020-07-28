@@ -1,3 +1,0 @@
-[console_scripts]
-pyshell = pyshell.runner:main
-
