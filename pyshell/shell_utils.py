@@ -38,7 +38,8 @@ class shellRunner:
             return
         elif 'pip' in command[0]:
             if 'VIRTUAL_ENV' in os.environ:
-                s = Sultan.load(src=os.path.join(os.environ['VIRTUAL_ENV'], 'bin', 'activate'))
+                s = Sultan.load(src=os.path.join(os.environ['VIRTUAL_ENV'], 'bin', 'activate'),
+                                executable='/bin/bash')
             else:
                 s = Sultan.load()
         else:
