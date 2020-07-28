@@ -1,4 +1,5 @@
 from sultan.api import Sultan
+import subprocess
 import time
 from collections import deque 
 import os
@@ -19,8 +20,27 @@ class shellRunner:
         pass
 
     def _process_command(self, command):
+
+        if self._is_complex(command):
+            return self._process_complex(command)
+        return self._process_one_command(command)
+
+    def _process_one_command(self, command):
         command = command.split()
         streaming = False
+        output = subprocess.run('which ' + command[0],
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        shell=True)
+        path = output.stdout.decode('utf-8').strip()
+        print("path is " + str(path))
+        if path and command[0] in consts.DISPLAY:
+            try:
+                subprocess.check_call(command)
+            except subprocess.CalledProcessError:
+                print("[pyshell] command failed...")
+                return 1
+            return 0
         if command[0] == 'export':
             if len(command) < 2:
                 print("exporting nothing is not allowed")
@@ -34,13 +54,13 @@ class shellRunner:
             if len(split_cmd) < 2:
                 raise RuntimeError("cannot set = to nothing")
             os.environ[split_cmd[0]] = split_cmd[1]
-            return
+            return 0
         elif 'cd' in command[0]:
             if len(command) < 2:
                 print('cannot change dir to nothing')
                 return
             os.chdir(command[1])
-            return
+            return 0
         elif 'pip' in command[0]:
             if 'VIRTUAL_ENV' in os.environ:
                 s = Sultan.load(src=os.path.join(os.environ['VIRTUAL_ENV'], 'bin', 'activate'),
@@ -54,6 +74,8 @@ class shellRunner:
             bas_cmd = command[1] if command[0] == 'sudo' else command[0]
             s = Sultan.load(sudo=True if command[0] == 'sudo' else False)
             idx = 2 if command[0] == 'sudo' else 1
+            if bas_cmd == 'apt-get': 
+                bas_cmd = 'apt__get'
 
         options = ''
         while idx < len(command):
@@ -62,17 +84,34 @@ class shellRunner:
         if streaming:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run(streaming=True)'
             print("cmd str is: " + str(cmd_string))
-            exec(cmd_string, globals(), locals())      
-            complete = False
-            while not complete:
-                complete = result.is_complete
-                for line in result.stdout:
-                    print(line)
-                for line in result.stderr:
-                    print(line)
-                time.sleep(.5)
+            try:
+                exec(cmd_string, globals(), locals())      
+                complete = False
+                while not complete:
+                    complete = result.is_complete
+                    for line in result.stdout:
+                        print(line)
+                    for line in result.stderr:
+                        print(line)
+                    time.sleep(.5)
+            except Exception as e:
+                print("command failed!")
+                return 1
         else:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
             print("cmd str is: " + str(cmd_string))
-            exec(cmd_string, globals(), locals())      
-            result.print_stdout()
+            try:
+                exec(cmd_string, globals(), locals())
+                result.print_stdout()
+            except Exception as e:
+                print("command failed!")
+                return 1
+
+
+    def _is_complex(self, command):
+        return False
+        return any(consts.COMPLEX_SYMBOLS) in command
+    
+    def _process_complex(self, command):
+        pass
+        #subcommands = split('&&')
