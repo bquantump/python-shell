@@ -1,16 +1,15 @@
 from sultan.api import Sultan
 from collections import deque 
+import os
 from . import consts
 
 
 class shellRunner:
     def __init__(self):
-        self.command_que_in = deque(maxlen=10)
-        self.command_que_out = deque(maxlen=10)
+        pass
 
     def feed(self, command): # string.split()
-        
-        self.command_que_in.append(command)
+        self._process_command(command)
 
     def get_bash_var(self, var):
         return os.environ.get(var)
@@ -31,6 +30,11 @@ class shellRunner:
             if len(split_cmd) < 2:
                 raise RuntimeError("cannot set = to nothing")
             os.environ[split_cmd[0]] = split_cmd[1]
+        elif 'cd' in command[0]:
+            if len(command) < 2:
+                print('cannot change dir to nothing')
+                return
+            os.chdir(command[1])
         else:
             s = Sultan.load(sudo=True if command[0] == 'sudo' else False)
             bas_cmd = self.parse_base(command[1] if command[0] == 'sudo' else command[0])
