@@ -11,6 +11,5 @@ class pyRunner:
     def run_python(self, py_code):
         exec(py_code, globals(), self.py_local_context)
 
-
     def get_var(self, var_name):
         return self.py_local_context.get(var_name)

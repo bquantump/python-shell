@@ -4,3 +4,5 @@ EXIT_PYSHELL_CMD = 'exit'
 PYTHON_VAR_DELIMETER = '@'
 PYTHON_SINGLE_LINE_INPUT_DELEMETER = '>>>'
 PYTHON_MULTI_LINE_INPUT_DELIMETER = '...'
+COMPLEX_SYMBOLS = ['||', ';', '&&']
+DISPLAY = ('vim', 'cat', 'vi', 'less')
