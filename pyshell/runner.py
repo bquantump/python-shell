@@ -12,19 +12,20 @@ def display_welcome():
 
 
 def main():
+    sell_parser = parser.shellParser()
     display_welcome()
     while(True):
-        input = Sultan().stdin(os.getcwd() + ': ')
-        if input == consts.EXIT_PYSHELL_CMD:
+        user_in = Sultan().stdin(os.getcwd() + ': ')
+        if user_in == consts.EXIT_PYSHELL_CMD:
             break
-        if input.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
+        if user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
             while(True):
                 single_line_code = Sultan().stdin('')
                 # print('multi-line mode: '+input)
-                input += single_line_code
+                user_in += single_line_code
                 if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
                     break
-        print(parser.checkBashOrPython(input)) # pass the input to parser
+        print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
 
 
 if __name__ == "__main__":

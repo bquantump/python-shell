@@ -18,8 +18,8 @@ class shellRunner:
         pass
 
     def _process_command(self, command):
-        to_split = command
-        
+        command = command.split()
+
         if command[0] == 'export':
             if len(command) < 2:
                 print("exporting nothing is not allowed")
@@ -54,10 +54,12 @@ class shellRunner:
                 options += command[idx]
                 idx += 1
 
-        cmd_string = 'result = s.' + bas_cmd + '(' + options + ')' + '.run()'
-        exec(cmd_string)
+        cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
+        print("cmd str is: " + str(cmd_string))
+        exec(cmd_string, globals(), locals())      
         result.print_stdout()
 
-def parse_base(self, cmd):
-    pass
+    def parse_base(self, cmd):
+        print("cmd is " + str(cmd))
+        return cmd
         
