@@ -1,0 +1,11 @@
+Metadata-Version: 1.1
+Name: python-shell
+Version: 0.1
+Summary: Python embeded shell
+Home-page: https://github.com/bquantump/python-shell
+Author: Microsoft Corporation
+Author-email: azpycli@microsoft.com
+License: MIT
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
