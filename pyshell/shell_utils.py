@@ -14,6 +14,9 @@ class shellRunner:
     def get_bash_var(self, var):
         return os.environ.get(var)
 
+    def run_script(self, script):
+        pass
+
     def _process_command(self, command):
         to_split = command
         
