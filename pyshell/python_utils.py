@@ -6,4 +6,11 @@ class pyRunner:
         pass
     
     def run_py_script(self, path):
-        runpy.run_path(file_path=path)
+        out = runpy.run_path(file_path=path)
+
+    def run_python(self, py_code):
+        pass
+
+    def get_var(self, var_name):
+        pass
+    
