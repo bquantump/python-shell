@@ -35,9 +35,15 @@ class shellRunner:
                 print('cannot change dir to nothing')
                 return
             os.chdir(command[1])
+            return
+        elif 'pip' in command[0]:
+            if 'VIRTUAL_ENV' in os.environ:
+                s = Sultan.load(src=os.path.join(os.environ['VIRTUAL_ENV'], 'bin', 'activate'))
+            else:
+                s = Sultan.load()
         else:
-            s = Sultan.load(sudo=True if command[0] == 'sudo' else False)
             bas_cmd = self.parse_base(command[1] if command[0] == 'sudo' else command[0])
+            s = Sultan.load(sudo=True if command[0] == 'sudo' else False)
             idx = 2 if command[0] == 'sudo' else 1
             options = ''
             while idx < len(command):
