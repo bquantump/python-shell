@@ -34,6 +34,7 @@ class shellRunner:
             if len(split_cmd) < 2:
                 raise RuntimeError("cannot set = to nothing")
             os.environ[split_cmd[0]] = split_cmd[1]
+            return
         elif 'cd' in command[0]:
             if len(command) < 2:
                 print('cannot change dir to nothing')

@@ -16,6 +16,7 @@ class shellParser():
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
             #print('Get Python single line: ', self.input[3:])
+            self.pythonRunner.run_python(user_in[3:])
             return 'Python single line:\n' + user_in[3:] #call pyRunner(self.input[2:])
         # Python multi line: '...'
         elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):             
