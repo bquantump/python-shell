@@ -15,14 +15,14 @@ def main():
     display_welcome()
     while(True):
         input = Sultan().stdin(os.getcwd() + ': ')
-        if input.startswith(consts.MULTI_LINE_PYTHON_INPUT_PREFIX):
+        if input.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
             while(True):
                 single_line_code = Sultan().stdin('')
                 # print('multi-line mode: '+input)
                 input += single_line_code
-                if single_line_code == consts.MULTI_LINE_PYTHON_INPUT_PREFIX:
+                if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
                     break
-        print(input) # pass the input to parser
+        print(parser.checkBashOrPython(input)) # pass the input to parser
 
 
 if __name__ == "__main__":
