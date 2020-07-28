@@ -9,8 +9,15 @@ class shellParser():
 
     def checkBashOrPython(self, user_in):
         user_in = user_in.lstrip()
+        if user_in.split()[0] == consts.ECHO_CMD:
+            #TODO: validate split is greater than one
+            cmd_split = user_in.split()
+            if cmd_split[1][0] == consts.PYTHON_VAR_DELIMETER:
+                return self.pythonRunner.get_var(cmd_split[1][1:])
+            else:
+                return self.shellRunner.get_bash_var(cmd_split[1][1:])
         # Python var: '@'
-        if user_in[0] == consts.PYTHON_VAR_DELIMETER:
+        elif user_in[0] == consts.PYTHON_VAR_DELIMETER:
             return 'Python var:\n' + user_in[1:] #call pyRunner(self.input[1:])
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
@@ -21,6 +28,7 @@ class shellParser():
         elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):             
             user_in = user_in[len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):]
             user_in = user_in[:-len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER)]
+            self.pythonRunner.run_python(user_in)
             return 'Python multi line:\n' + user_in #call pyRunner(input)
         # check for Python or bash scripts
         elif user_in.startswith(consts.PYTHON_BASH_SCRIPT_DELIMETER):
