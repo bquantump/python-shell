@@ -8,10 +8,9 @@ class shellParser():
         self.shellRunner = shell_utils.shellRunner()
 
     def checkBashOrPython(self, user_in):
-        # Python var: '@'
         user_in = user_in.lstrip()
+        # Python var: '@'
         if user_in[0] == consts.PYTHON_VAR_DELIMETER:
-            #print('Get Python var: ', self.input[1:])
             return 'Python var:\n' + user_in[1:] #call pyRunner(self.input[1:])
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
@@ -22,10 +21,31 @@ class shellParser():
         elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):             
             user_in = user_in[len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):]
             user_in = user_in[:-len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER)]
-            #print('Get Python multi line: (prints on newline to show tabs)\n', input)
             return 'Python multi line:\n' + user_in #call pyRunner(input)
+        # check for Python or bash scripts
+        elif user_in.startswith(consts.PYTHON_BASH_SCRIPT_DELIMETER):
+            return 'Bash Python script:\n' + self.script_formatter(user_in) #call pyRunner.run_py_script(user_in)
+        elif user_in.startswith(consts.SHELL_SCRIPT_START_DELIMETER):
+            return 'Shell script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
+        elif user_in.startswith(consts.SHELL_SCRIPT_SH_START_DELIMETER):
+            return 'Shell script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
+        elif user_in.startswith(consts.BASH_SCRIPT_START_DELIMETER):
+            return 'Bash script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
         # all other commands must be bash/shell
         else:
-            #print('Bash/shell command: ', self.input)
             self.shellRunner.feed(user_in)
-            return 'Bash command:\n' + user_in #call shellRunner(self.input)
+            return 'Bash command:\n' + user_in #call shellRunner(self.input) 
+
+    def script_formatter(self, user_in):
+        input_split = user_in.split(' ')
+        user_output = ''
+        for word in input_split:
+            # check if we need to switch out variable
+            if word[0] == '@':
+                user_output += 'replaced pyvar' + ' ' #pyRunner.get_var(word[1:])
+            elif word[0] == '$':
+                user_output += 'replaced bashvar' + ' ' #shellRunner.get_var(word[1:])
+            else: 
+                user_output += word + ' '
+        return user_output 
+        
