@@ -15,6 +15,8 @@ def main():
     display_welcome()
     while(True):
         input = Sultan().stdin(os.getcwd() + ': ')
+        if input == consts.EXIT_PYSHELL_CMD:
+            break
         if input.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
             while(True):
                 single_line_code = Sultan().stdin('')
