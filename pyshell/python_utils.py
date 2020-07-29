@@ -6,7 +6,7 @@ class pyRunner:
         self.py_local_context = locals()
     
     def run_py_script(self, path):
-        out = runpy.run_path(file_path=path)
+        out = runpy.run_path(path) 
 
     def run_python(self, py_code):
         exec(py_code, globals(), self.py_local_context)
