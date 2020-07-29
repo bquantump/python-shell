@@ -3,13 +3,13 @@ import cmd
 import sys
 from . import consts, parser
 from sultan.api import Sultan
-from termcolor import colored
+from termcolor import colored, cprint
 
 def display_welcome():
-    print(' Welcome to pyshell!')
-    print(' Useage:')
-    print('     Echo python variable with character @')
-    print("     Write single-line python code start with '>>>', if it is in multi-line start with '...'\n")
+    cprint(' Welcome to pyshell!\n Useage:', 'cyan', attrs=['bold'])
+    cprint('     Echo python variable with character @', 'cyan', attrs=['bold'])
+    cprint("     Write single-line python code start with '>>>', if it is in multi-line start with '...'\n", 'cyan',
+        attrs=['bold'])
 
 
 def get_prefix():
@@ -59,7 +59,7 @@ class CmdParse(cmd.Cmd):
             self.line_buffer = ''
             return
         self.multi_line = True
-        self.prompt = colored("python mode >>>", 'green') 
+        self.prompt = colored("python mode >>>", 'green', attrs=['bold'])
 
     def parseline(self, line):
         """Parse the line into a command name and a string containing
