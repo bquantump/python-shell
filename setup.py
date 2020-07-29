@@ -13,7 +13,7 @@ setup(
     zip_safe=False,
     classifiers=["Programming Language :: Python :: 3"],
     packages=['pyshell'],
-    install_requires=['pytest'],
+    install_requires=['pytest', 'termcolor'],
     include_package_data=True,
     entry_points={
         'console_scripts': ['pyshell=pyshell.runner:main']
