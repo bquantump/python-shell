@@ -20,48 +20,58 @@ def get_prefix():
 
 
 def main():
-    sell_parser = parser.shellParser()
     display_welcome()
-    while(True):
-        user_in = Sultan().stdin(colored(get_prefix(), 'cyan'))
-        if user_in == consts.EXIT_PYSHELL_CMD:
-            break
-        if user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
-            while(True):
-                single_line_code = Sultan().stdin('')
-                user_in += single_line_code
-                if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
-                    break
-        output = sell_parser.checkBashOrPython(user_in)
-        if output != None:
-            print(output)
+    cmd = CmdParse(parser.shellParser())
+    cmd.cmdloop()
 
-
-multi_line = False
-line_buffer = []
 class CmdParse(cmd.Cmd):
-    prompt = get_prefix()
+    def __init__(self, shell_parser):
+        super().__init__(completekey='tab', stdin=None, stdout=None)
+        self.shell_parser = shell_parser
+        self.multi_line = False
+        self.line_buffer = ''
+    prompt = colored(get_prefix(), 'cyan')
     def do_exit(self, arg):
         sys.exit(0)
     def default(self, line):
-        if multi_line:
-            line_buffer.append(line)
-        elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
-            while(True):
-                single_line_code = Sultan().stdin('')
-                user_in += single_line_code
-                if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
-                    break
-            print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
+        if self.multi_line:
+            self.line_buffer += line + "\n"
+        else:
+            output = self.shell_parser.checkBashOrPython(line)
+            if output != None:
+                print(output)
+        self.prompt = colored(get_prefix(), 'cyan')
     def do_py(self, arg):
-        if multi_line:
-            sell_parser.checkBashOrPython(line_buffer)
-            multi_line = False
-            self.prompt = get_prefix()
+        if self.multi_line:
+            print("here")
+            print(self.line_buffer)
+            self.line_buffer = '...' + self.line_buffer + '...'
+            self.shell_parser.checkBashOrPython(self.line_buffer)
+            self.multi_line = False
+            self.prompt = colored(get_prefix(), 'cyan')
+            self.line_buffer = ''
             return
-        multi_line = True
-        self.prompt = "python mode>>>"
+        self.multi_line = True
+        self.prompt = colored("python mode >>>", 'magenta') 
 
+    def parseline(self, line):
+        """Parse the line into a command name and a string containing
+        the arguments.  Returns a tuple containing (command, args, line).
+        'command' and 'args' may be None if the line couldn't be parsed.
+        """
+        if not line:
+            return None, None, line
+        elif line[0] == '?':
+            line = 'help ' + line[1:]
+        elif line[0] == '!':
+            if hasattr(self, 'do_shell'):
+                line = 'shell ' + line[1:]
+            else:
+                return None, None, line
+        i, n = 0, len(line)
+        while i < n and line[i] in self.identchars: i = i+1
+        cmd, arg = line[:i], line[i:].strip()
+        return cmd, arg, line
 
 if __name__ == "__main__":
     main()
