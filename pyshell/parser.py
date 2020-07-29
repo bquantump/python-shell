@@ -30,16 +30,11 @@ class shellParser():
             user_in = user_in[:-len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER)]
             return self.pythonRunner.run_python(user_in)
         # check for Python or bash scripts
-        elif user_in.startswith(consts.PYTHON_BASH_SCRIPT_DELIMETER):   # python
+        elif user_in.startswith(consts.PYTHON_BASH_SCRIPT_DELIMETER):
             return self.pythonRunner.run_py_script(self.script_formatter(user_in))
-        # COMBINE INTO ONE COND
-        elif user_in.startswith(consts.SHELL_SCRIPT_DELIMETER): # ./script.sh -s "hello"
-            # return 'Shell script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
+        elif user_in.startswith(consts.SHELL_SCRIPT_DELIMETER) or user_in.startswith(consts.SHELL_SCRIPT_SH_DELIMETER) \
+            or user_in.startswith(consts.BASH_SCRIPT_DELIMETER):
             return self.shellRunner.run_script(self.script_formatter(user_in))
-        elif user_in.startswith(consts.SHELL_SCRIPT_SH_DELIMETER): # sh script.sh -s "hello"
-            return 'Shell script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
-        elif user_in.startswith(consts.BASH_SCRIPT_DELIMETER): # bash script.sh -s "hello"
-            return 'Bash script:\n' + self.script_formatter(user_in) #call shellRunner.run_script(user_in)
         # all other commands must be bash/shell
         else:
             return self.shellRunner.feed(user_in)

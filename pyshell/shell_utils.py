@@ -17,12 +17,12 @@ class shellRunner:
         return os.environ.get(var)
 
     def run_script(self, script):
-        # try catch - print error
-        # import subprocess
-        # subprocess.check_call("bash test.sh", shell = True, executable = '/bin/bash')
-        # subprocess.check_call("./test.sh", shell = True, executable = '/bin/bash')
-        # ubprocess.check_call("sh test.sh", shell = True, executable = '/bin/bash')
-        pass
+        try:
+            subprocess.check_call(script, shell=True, executable='/bin/bash')
+        except subprocess.CalledProcessError as ex:
+            print("command failed: ", script)
+            return 1
+        return 0
     
     def _process_command(self, command):
 
