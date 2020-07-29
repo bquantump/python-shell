@@ -32,7 +32,8 @@ class CmdParse(cmd.Cmd):
         self.line_buffer = ''
     prompt = colored(get_prefix(), 'cyan')
     def do_exit(self, arg):
-        sys.exit(0)
+        if not self.multi_line:
+            sys.exit(0)
     def default(self, line):
         if self.multi_line:
             self.line_buffer += line + "\n"
