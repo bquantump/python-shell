@@ -46,13 +46,13 @@ class CmdParse(cmd.Cmd):
     def default(self, line):
         if multi_line:
             line_buffer.append(line)
-        if user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
+        elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
             while(True):
                 single_line_code = Sultan().stdin('')
                 user_in += single_line_code
                 if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
                     break
-        print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
+            print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
     def do_py(self, arg):
         if multi_line:
             sell_parser.checkBashOrPython(line_buffer)
