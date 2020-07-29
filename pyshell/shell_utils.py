@@ -44,6 +44,8 @@ class shellRunner:
             except subprocess.CalledProcessError:
                 print("[pyshell] command failed...")
                 return 1
+            except KeyboardInterrupt:
+                print("interupted")
             return 0
         if command[0] == 'export':
             if len(command) < 2:
@@ -75,6 +77,8 @@ class shellRunner:
             bas_cmd = 'pip'
             idx = 1
         else:
+            if command[0] in consts.STREAMING:
+                streaming = True
             bas_cmd = command[1] if command[0] == 'sudo' else command[0]
             s = Sultan.load(sudo=True if command[0] == 'sudo' else False)
             idx = 2 if command[0] == 'sudo' else 1
@@ -101,6 +105,8 @@ class shellRunner:
                 print("command failed!")
                 print(e)
                 return 1
+            except KeyboardInterrupt:
+                print("interupted")
         else:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
             try:
