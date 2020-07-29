@@ -43,7 +43,6 @@ class CmdParse(cmd.Cmd):
         self.prompt = colored(get_prefix(), 'cyan')
     def do_py(self, arg):
         if self.multi_line:
-            print("here")
             print(self.line_buffer)
             self.line_buffer = '...' + self.line_buffer + '...'
             self.shell_parser.checkBashOrPython(self.line_buffer)
