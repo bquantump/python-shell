@@ -12,12 +12,12 @@ class shellParser():
         user_in = user_in.lstrip()
         # echo
         if user_in.split()[0] == consts.ECHO_CMD:
-            #TODO: validate split is greater than one
-            cmd_split = user_in.split()
-            if cmd_split[1][0] == consts.PYTHON_VAR_DELIMETER:
-                return self.pythonRunner.get_var(cmd_split[1][1:])
-            else:
-                return self.shellRunner.get_bash_var(cmd_split[1][1:])
+            if len(user_in.split()) > 1:
+                cmd_split = user_in.split()
+                if cmd_split[1][0] == consts.PYTHON_VAR_DELIMETER:
+                    return self.pythonRunner.get_var(cmd_split[1][1:])
+                else:
+                    return self.shellRunner.get_bash_var(cmd_split[1][1:])
         # Python var: '@'
         elif user_in[0] == consts.PYTHON_VAR_DELIMETER:
             if '$' in user_in:
