@@ -107,14 +107,13 @@ class shellRunner:
                 exec(cmd_string, globals(), locals())
                 result.print_stdout()
             except Exception as e:
-                print("command failed!")
+                print("command failed")
                 return 1
 
 
     def _is_complex(self, command):
         return False
-        return any(consts.COMPLEX_SYMBOLS) in command
     
+    # TODO: add complex bash command handling 
     def _process_complex(self, command):
         pass
-        #subcommands = split('&&')
