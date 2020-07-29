@@ -25,10 +25,9 @@ class shellParser():
                 if not user_in:
                     print("python input has a syntax error or env var does not exist")
                     return None
-                self.pythonRunner.run_python(user_in)
             else:
                 user_in = user_in[1:]
-                return self.pythonRunner.get_var(user_in)
+            return self.pythonRunner.run_python(user_in)
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
             return self.pythonRunner.run_python(user_in[3:])
