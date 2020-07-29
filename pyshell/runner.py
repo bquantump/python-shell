@@ -1,8 +1,7 @@
 import os
-
 from . import consts, parser
 from sultan.api import Sultan
-
+from termcolor import colored
 
 def display_welcome():
     print(' Welcome to pyshell!')
@@ -22,7 +21,7 @@ def main():
     sell_parser = parser.shellParser()
     display_welcome()
     while(True):
-        user_in = Sultan().stdin(get_prefix())
+        user_in = Sultan().stdin(colored(get_prefix(), 'cyan'))
         if user_in == consts.EXIT_PYSHELL_CMD:
             break
         if user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
