@@ -87,7 +87,6 @@ class shellRunner:
             idx += 1
         if streaming:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run(streaming=True)'
-            print("cmd str is: " + str(cmd_string))
             try:
                 exec(cmd_string, globals(), locals())      
                 complete = False
@@ -104,12 +103,11 @@ class shellRunner:
                 return 1
         else:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
-            print("cmd str is: " + str(cmd_string))
             try:
                 exec(cmd_string, globals(), locals())
                 result.print_stdout()
             except Exception as e:
-                print("command failed!")
+                print("command failed")
                 return 1
 
 
