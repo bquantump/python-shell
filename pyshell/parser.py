@@ -51,7 +51,7 @@ class shellParser():
     def _replace_bash_vars(self, user_in):
             out, bash_var, emplace = '', '', True
             for i in user_in:
-                if i == "$":
+                if i == consts.BASH_VAR_DELIMETER:
                     if not emplace:
                          return None
                     emplace = False

@@ -5,7 +5,7 @@ from sultan.api import Sultan
 
 
 def display_welcome():
-    print(' Welcome to pyshell')
+    print(' Welcome to pyshell!')
     print(' Useage:')
     print('     Echo python variable with character @')
     print("     Write single-line python code start with '>>>', if it is in multi-line start with '...'\n")
@@ -31,7 +31,9 @@ def main():
                 user_in += single_line_code
                 if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
                     break
-        print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
+        output = sell_parser.checkBashOrPython(user_in)
+        if output != None:
+            print(output)
 
 
 if __name__ == "__main__":
