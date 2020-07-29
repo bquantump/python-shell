@@ -115,8 +115,7 @@ class shellRunner:
 
     def _is_complex(self, command):
         return False
-        return any(consts.COMPLEX_SYMBOLS) in command
     
+    # TODO: add complex bash command handling 
     def _process_complex(self, command):
         pass
-        #subcommands = split('&&')
