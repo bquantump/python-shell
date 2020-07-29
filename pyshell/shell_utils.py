@@ -17,8 +17,13 @@ class shellRunner:
         return os.environ.get(var)
 
     def run_script(self, script):
+        # try catch - print error
+        # import subprocess
+        # subprocess.check_call("bash test.sh", shell = True, executable = '/bin/bash')
+        # subprocess.check_call("./test.sh", shell = True, executable = '/bin/bash')
+        # ubprocess.check_call("sh test.sh", shell = True, executable = '/bin/bash')
         pass
-
+    
     def _process_command(self, command):
 
         if self._is_complex(command):
@@ -96,6 +101,7 @@ class shellRunner:
                     time.sleep(.5)
             except Exception as e:
                 print("command failed!")
+                print(e)
                 return 1
         else:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
