@@ -20,7 +20,15 @@ class shellParser():
                 return self.shellRunner.get_bash_var(cmd_split[1][1:])
         # Python var: '@'
         elif user_in[0] == consts.PYTHON_VAR_DELIMETER:
-            return self.pythonRunner.get_var(user_in[1:])
+            if '$' in user_in:
+                user_in = self._replace_bash_vars(user_in)
+                if not user_in:
+                    print("python input has a syntax error or env var does not exist")
+                    return None
+                self.pythonRunner.run_python(user_in)
+            else:
+                user_in = user_in[1:]
+                return self.pythonRunner.get_var(user_in)
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
             return self.pythonRunner.run_python(user_in[3:])
@@ -39,7 +47,28 @@ class shellParser():
         else:
             return self.shellRunner.feed(user_in)
 
-        
+    
+    def _replace_bash_vars(self, user_in):
+            out, bash_var, emplace = '', '', True
+            for i in user_in:
+                if i == "$":
+                    if not emplace:
+                         return None
+                    emplace = False
+                elif emplace:
+                    out += i
+                elif not emplace and (i == ','  or i == ';' or i == ')' or i == ':'):
+                    bash_var = self.shellRunner.get_bash_var(bash_var.lstrip())
+                    if not bash_var: return None
+                    out += bash_var + i
+                    emplace = True
+                elif not emplace:
+                    bash_var += i
+            if not emplace:
+                return None
+            return 'print(' + out[1::] + ')'
+       
+
     def script_formatter(self, user_in):
         input_split = user_in.rstrip().split(' ') 
         user_output = ''

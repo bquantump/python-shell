@@ -38,7 +38,6 @@ class shellRunner:
                         stderr=subprocess.PIPE,
                         shell=True)
         path = output.stdout.decode('utf-8').strip()
-        print("path is " + str(path))
         if path and command[0] in consts.DISPLAY:
             try:
                 subprocess.check_call(command)
