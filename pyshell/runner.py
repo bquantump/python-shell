@@ -30,10 +30,15 @@ class CmdParse(cmd.Cmd):
         self.shell_parser = shell_parser
         self.multi_line = False
         self.line_buffer = ''
+    
     prompt = colored(get_prefix(), 'cyan')
+    
+    
     def do_exit(self, arg):
         if not self.multi_line:
             sys.exit(0)
+    
+    
     def default(self, line):
         if self.multi_line:
             self.line_buffer += line + "\n"
@@ -42,6 +47,8 @@ class CmdParse(cmd.Cmd):
             if output != None:
                 print(output)
         self.prompt = colored(get_prefix(), 'cyan')
+    
+    
     def do_py(self, arg):
         if self.multi_line:
             print(self.line_buffer)
@@ -52,7 +59,7 @@ class CmdParse(cmd.Cmd):
             self.line_buffer = ''
             return
         self.multi_line = True
-        self.prompt = colored("python mode >>>", 'magenta') 
+        self.prompt = colored("python mode >>>", 'green') 
 
     def parseline(self, line):
         """Parse the line into a command name and a string containing
