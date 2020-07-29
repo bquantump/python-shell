@@ -50,7 +50,7 @@ class shellParser():
     def _replace_bash_vars(self, user_in):
             out, bash_var, emplace = '', '', True
             for i in user_in:
-                if i == "$":
+                if i == consts.BASH_VAR_DELIMETER:
                     if not emplace:
                          return None
                     emplace = False
@@ -75,10 +75,10 @@ class shellParser():
             # check if we need to switch out variable
             if word != consts.PYTHON_BASH_SCRIPT_DELIMETER:
                 if word.startswith(consts.PYTHON_VAR_DELIMETER):
-                    user_output += this.pythonRunner.get_var(word[1:]) + ' '
+                    user_output += self.pythonRunner.get_var(word[1:]) + ' '
                 elif word.startswith(consts.BASH_VAR_DELIMETER):
-                    user_output += this.shellRunner.get_bash_var(word[1:]) + ' '
+                    user_output += self.shellRunner.get_bash_var(word[1:]) + ' '
                 else: 
                     user_output += word + ' '
-        return user_output
+        return user_output.rstrip()
         

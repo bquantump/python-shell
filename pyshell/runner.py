@@ -3,10 +3,10 @@ import cmd
 import sys
 from . import consts, parser
 from sultan.api import Sultan
-
+from termcolor import colored
 
 def display_welcome():
-    print(' Welcome to pyshell')
+    print(' Welcome to pyshell!')
     print(' Useage:')
     print('     Echo python variable with character @')
     print("     Write single-line python code start with '>>>', if it is in multi-line start with '...'\n")
@@ -23,7 +23,7 @@ def main():
     sell_parser = parser.shellParser()
     display_welcome()
     while(True):
-        user_in = Sultan().stdin(get_prefix())
+        user_in = Sultan().stdin(colored(get_prefix(), 'cyan'))
         if user_in == consts.EXIT_PYSHELL_CMD:
             break
         if user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):
@@ -32,7 +32,9 @@ def main():
                 user_in += single_line_code
                 if single_line_code == consts.PYTHON_MULTI_LINE_INPUT_DELIMETER:
                     break
-        print(sell_parser.checkBashOrPython(user_in)) # pass the input to parser
+        output = sell_parser.checkBashOrPython(user_in)
+        if output != None:
+            print(output)
 
 
 multi_line = False
