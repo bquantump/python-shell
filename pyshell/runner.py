@@ -45,7 +45,7 @@ class CmdParse(cmd.Cmd):
             self.line_buffer += line + "\n"
         else:
             output = self.shell_parser.checkBashOrPython(line)
-            if output != None:
+            if output != None and output != 0 and output != 1:
                 print(output)
             self.prompt = colored(get_prefix(), 'cyan')
     
