@@ -45,7 +45,7 @@ class shellRunner:
                 print("[pyshell] command failed...")
                 return 1
             except KeyboardInterrupt:
-                print("interupted")
+                print("keyboard interupted")
             return 0
         if command[0] == 'export':
             if len(command) < 2:
@@ -58,7 +58,8 @@ class shellRunner:
         elif '=' in command[0]:
             split_cmd = command[0].split('=')
             if len(split_cmd) < 2:
-                raise RuntimeError("cannot set = to nothing")
+                print("Error: cannot set = to nothing")
+                return 1
             os.environ[split_cmd[0]] = split_cmd[1]
             return 0
         elif 'cd' in command[0]:
@@ -102,18 +103,19 @@ class shellRunner:
                         print(line)
                     time.sleep(.5)
             except Exception as e:
-                print("command failed!")
                 print(e)
+                print("command failed!")
                 return 1
             except KeyboardInterrupt:
-                print("interupted")
+                print("keyboard interupted")
         else:
             cmd_string = 'global result; result = s.' + bas_cmd + '(\'' + options + '\')' + '.run()'
             try:
                 exec(cmd_string, globals(), locals())
                 result.print_stdout()
             except Exception as e:
-                print("command failed")
+                print(e)
+                print("command failed!")
                 return 1
 
 
