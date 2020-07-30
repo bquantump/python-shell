@@ -14,7 +14,7 @@ class pyRunner:
 
     def run_python(self, py_code):
         try:
-            exec(py_code, globals(), self.py_local_context)
+            exec(py_code, self.py_local_context)
         except Exception as e:
             print(e)
             print('command failed!')

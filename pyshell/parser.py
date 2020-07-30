@@ -30,7 +30,12 @@ class shellParser():
             return self.pythonRunner.run_python(user_in)
         # Python single line: '>>>'
         elif user_in.startswith(consts.PYTHON_SINGLE_LINE_INPUT_DELEMETER): 
-            return self.pythonRunner.run_python(user_in[3:])
+            if '$' in user_in:
+                user_in = self._replace_bash_vars(user_in[2:])
+                print(user_in)
+            else:
+                user_in = user_in[3:]
+            return self.pythonRunner.run_python(user_in)
         # Python multi line: '...'
         elif user_in.startswith(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):             
             user_in = user_in[len(consts.PYTHON_MULTI_LINE_INPUT_DELIMETER):]
@@ -65,7 +70,7 @@ class shellParser():
                     bash_var += i
             if not emplace:
                 return None
-            return 'print(' + out[1::] + ')'
+            return out[1::] 
        
 
     def script_formatter(self, user_in):
