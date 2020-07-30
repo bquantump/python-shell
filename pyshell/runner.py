@@ -52,7 +52,6 @@ class CmdParse(cmd.Cmd):
     
     def do_py(self, arg):
         if self.multi_line:
-            print(self.line_buffer)
             self.line_buffer = '...' + self.line_buffer + '...'
             self.shell_parser.checkBashOrPython(self.line_buffer)
             self.multi_line = False
@@ -62,8 +61,6 @@ class CmdParse(cmd.Cmd):
             return
         self.multi_line = True
         self.old_completer = readline.get_completer()
-        self.completekey = 'o'
-        print(self.complete)
         readline.parse_and_bind("tab: tab-insert")
         self.prompt = colored("python mode >>>", 'green', attrs=['bold'])
 
